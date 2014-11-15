@@ -90,9 +90,8 @@ public class Client_Login_UI extends JPanel {
       manager.out = new PrintWriter(manager.socket.getOutputStream(), true);
 
       Request userInfo = new Request(username_field.getText().trim(), password_field.getText());
-      JsonUtils.writeToSocket(manager.out, userInfo);
 
-      Response response = JsonUtils.readFromSocket(manager.in, Response.class);
+      Response response = JsonUtils.makeRequest(manager.out, userInfo, manager.in, Response.class);
 
       if (response != null && response.success != null) {
         if (response.success) {
