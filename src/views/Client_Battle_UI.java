@@ -20,6 +20,7 @@ import javax.swing.Timer;
 
 import main.CharacterClass;
 import main.Views;
+import request.BattleStatusRequest;
 import responses.BattleStatusResponse;
 import ui.Drawable;
 import ui.IconButton;
@@ -38,7 +39,8 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
   public ViewManager manager;
   public SwingWorker<Void, Void> worker;
   private static final int PADDING = 15;
-  List<Drawable> drawables;
+  public List<Drawable> drawables;
+  public BattleStatusResponse battle_r;
 
   private Timer paintTimer = new Timer((int) (1 / 40.0 * 1000), event -> timerEvent(event));
 
@@ -53,73 +55,95 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     initBattle();
     descriptions = new ArrayList<String>();
     drawables = new ArrayList<Drawable>();
+    battle_r = new BattleStatusResponse(false, false);
+    battle_r = JsonUtils.readFromSocket(manager.in, BattleStatusResponse.class);
 
     if (manager.charType == CharacterClass.warrior) {
-      drawables.add(new IconButton(50, 320, new File("media/icons/bloody-stash.png"),
-          a -> bowmanPressed()));
+      drawables
+          .add(new IconButton(50, 320, new File("media/icons/bloody-stash.png"), a -> skill1()));
       descriptions.add("Bloody Slash");
       drawables.add(new IconButton(150, 320, new File("media/icons/shield-reflect.png"),
-          a -> robePressed()));
+          a -> skill2()));
       descriptions.add("Reflect DMG");
       drawables.add(new IconButton(250, 320, new File("media/icons/round-shield.png"),
-          a -> cloakDudePressed()));
+          a -> skill3()));
       descriptions.add("Block Blow");
-      drawables.add(new IconButton(350, 320, new File("media/icons/mailed-fist.png"),
-          a -> battleGearPressed()));
+      drawables
+          .add(new IconButton(350, 320, new File("media/icons/mailed-fist.png"), a -> skill4()));
       descriptions.add("Heavy Punch");
     } else if (manager.charType == CharacterClass.theif) {
-      drawables.add(new IconButton(50, 320, new File("media/icons/machete.png"),
-          a -> bowmanPressed()));
+      drawables.add(new IconButton(50, 320, new File("media/icons/machete.png"), a -> skill1()));
       descriptions.add("Poison Stab");
-      drawables.add(new IconButton(150, 320, new File("media/icons/heavy-arrow.png"),
-          a -> robePressed()));
+      drawables
+          .add(new IconButton(150, 320, new File("media/icons/heavy-arrow.png"), a -> skill2()));
       descriptions.add("Arrow Rain");
       drawables.add(new IconButton(250, 320, new File("media/icons/flash-grenade.png"),
-          a -> cloakDudePressed()));
+          a -> skill3()));
       descriptions.add("Smoke Bomb");
-      drawables.add(new IconButton(350, 320, new File("media/icons/backstab.png"),
-          a -> battleGearPressed()));
+      drawables.add(new IconButton(350, 320, new File("media/icons/backstab.png"), a -> skill4()));
       descriptions.add("Backstab");
     } else if (manager.charType == CharacterClass.mage) {
-      drawables.add(new IconButton(50, 320, new File("media/icons/heart-bottle.png"),
-          a -> bowmanPressed()));
+      drawables
+          .add(new IconButton(50, 320, new File("media/icons/heart-bottle.png"), a -> skill1()));
       descriptions.add("Health Vial");
       drawables.add(new IconButton(150, 320, new File("media/icons/smoking-finger.png"),
-          a -> robePressed()));
+          a -> skill2()));
       descriptions.add("Firebolt");
       drawables.add(new IconButton(250, 320, new File("media/icons/embrassed-energy.png"),
-          a -> cloakDudePressed()));
+          a -> skill3()));
       descriptions.add("Focus Power");
       drawables.add(new IconButton(350, 320, new File("media/icons/broken-bottle.png"),
-          a -> battleGearPressed()));
+          a -> skill4()));
       descriptions.add("Throw Vials");
     }
     addMouseListener(this);
     addMouseMotionListener(this);
     paintTimer.start();
-
+    waitForTurn();
     // JsonUtils.writeToSocket(manager.out, CharacterInfo.makeMage());
   }
 
-  private Drawable battleGearPressed() {
-    System.out.println("battlegear pressed");
+  private Drawable skill1() {
+    System.out.println("skill 1 pressed");
+
+    if (battle_r.your_turn && battle_r.game_ready) {
+      JsonUtils.toJsonString(new BattleStatusRequest());
+
+      waitForTurn();
+    }
     return null;
   }
 
-  private Drawable cloakDudePressed() {
-    System.out.println("cloak dude pressed");
+  private Drawable skill2() {
+    System.out.println("skill 2 pressed");
+
+    if (battle_r.your_turn && battle_r.game_ready) {
+      JsonUtils.toJsonString(new BattleStatusRequest());
+
+      waitForTurn();
+    }
     return null;
   }
 
-  private Drawable robePressed() {
-    // TODO Auto-generated method stub
-    System.out.println("robe dude pressed");
+  private Drawable skill3() {
+    System.out.println("skill 3 pressed");
+
+    if (battle_r.your_turn && battle_r.game_ready) {
+      JsonUtils.toJsonString(new BattleStatusRequest());
+
+      waitForTurn();
+    }
     return null;
   }
 
-  private Drawable bowmanPressed() {
-    // TODO Auto-generated method stub
-    System.out.println("bowman pressed");
+  private Drawable skill4() {
+    System.out.println("skill 4 pressed");
+
+    if (battle_r.your_turn && battle_r.game_ready) {
+      JsonUtils.toJsonString(new BattleStatusRequest());
+
+      waitForTurn();
+    }
     return null;
   }
 
@@ -157,11 +181,16 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
       drawable.draw(g);
     }
 
-    g.drawString("Health: ", 450, 375);
+    g.drawString("Health: ", 450, 345);
     g.setColor(Color.WHITE);
     g.fillRect(448, 358, 758 - 450, 2 * 9);
     g.setColor(Color.RED);
     g.fillRect(450, 360, 760 - 450, 2 * 10);
+
+
+    if (battle_r.game_ready && battle_r.your_turn) {
+      g.drawString("Waiting for your Turn!", PADDING, PADDING);
+    }
 
   }
 
@@ -174,10 +203,16 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
       @Override
       protected Void doInBackground() throws Exception {
         // Simulate doing something useful.
-        for (int i = 0; i <= 180; i++) {
+        for (int i = 0; i <= 1000; i++) {
+
+          JsonUtils.toJsonString(new BattleStatusRequest());
 
           BattleStatusResponse battle_r =
               JsonUtils.readFromSocket(manager.in, BattleStatusResponse.class);
+
+          if (battle_r.game_ready && battle_r.your_turn) {
+            worker.cancel(true);
+          }
 
           Thread.sleep(1000);
         }

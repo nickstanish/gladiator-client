@@ -2,7 +2,6 @@ package main;
 
 public class CharacterInfo {
 
-  public String action = "NewCharacter";
   public int character_level;
   public CharacterClass character_class;
   public int max_hp;

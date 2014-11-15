@@ -2,15 +2,12 @@ package responses;
 
 public class BattleStatusResponse {
 
-  public BattleStatus mine;
-  public BattleStatus foe;
+  public Boolean game_ready;
+  public Boolean your_turn;
 
-}
-
-
-class BattleStatus {
-  public int current_hp;
-  public int current_ap;
-  public Character character_information;
+  public BattleStatusResponse(Boolean game_ready, Boolean your_turn) {
+    this.game_ready = game_ready;
+    this.your_turn = your_turn;
+  }
 
 }
