@@ -57,7 +57,7 @@ public class Client_Login_UI extends JFrame {
     componentConstraints.alignX("center").spanX();
     componentConstraints.span();
     componentConstraints.wrap();
-    
+
     mainPanel.add(login_text, componentConstraints);
 
     JLabel username_field_text = new JLabel();
@@ -78,8 +78,8 @@ public class Client_Login_UI extends JFrame {
     connectButtonConstraints.alignX("center").spanX();
     connectButtonConstraints.span();
     connectButtonConstraints.wrap();
-    
-    
+
+
     connectButton = new JButton("Connect");
     // java 8 lambda
     connectButton.addActionListener(event -> connect(event));
@@ -90,27 +90,25 @@ public class Client_Login_UI extends JFrame {
   }
 
   private void connect(ActionEvent event) {
-    
+
     username_field.getText();
     try {
       Socket socket = new Socket("localhost", 8080);
       BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
       // out.println("asdfkhgasdhjf");
-      
-        Request userInfo = new Request(username_field.getText(),password_field.getText());
-        JsonUtils.writeToSocket(out, userInfo);
-        
-      socket.close();
+
+      Request userInfo = new Request(username_field.getText(), password_field.getText());
+      JsonUtils.writeToSocket(out, userInfo);
+
+      // socket.close();
       // String validation = in.readLine();
     } catch (IOException e) {
     }
 
     Client_UI window = new Client_UI();
-	window.pack();
-	window.setVisible(true);
-    
+    window.pack();
+    window.setVisible(true);
+
   }
 }
-
-
