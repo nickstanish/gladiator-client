@@ -2,6 +2,7 @@ package main;
 
 public class CharacterInfo {
 
+  public String action = "NewCharacter";
   public int character_level;
   public CharacterClass character_class;
   public int max_hp;
@@ -30,7 +31,7 @@ public class CharacterInfo {
     temp.max_hp = 160;
     temp.max_ap = 6;
     temp.exp = 0;
-    temp.attack = 114;
+    temp.attack = 14;
     temp.crit_chance = .05;
     return temp;
   }

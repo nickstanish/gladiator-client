@@ -3,6 +3,7 @@ package views;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -15,9 +16,11 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import main.CharacterClass;
 import main.CharacterInfo;
 import main.Views;
 import net.miginfocom.swing.MigLayout;
+import request.StartBattleRequest;
 import ui.Drawable;
 import ui.IconButton;
 import utils.JsonUtils;
@@ -52,26 +55,42 @@ public class Client_Character_Select_UI extends JPanel implements MouseListener,
     drawables.add(new IconButton(175, 50, new File("media/icons/hood.png"), a -> theifPressed()));
     drawables.add(new IconButton(275, 50, new File("media/icons/pointy-hat.png"),
         a -> magePressed()));
+
+    /*
+     * drawables.add(new IconButton(5, 150, new File(""), a -> nothing())); drawables.add(new
+     * IconButton(150, 150, new File(""), a -> nothing())); drawables.add(new IconButton(250, 150,
+     * new File(""), a -> nothing())); drawables.add(new IconButton(350, 150, new File(""), a ->
+     * nothing()));
+     */
     addMouseListener(this);
     addMouseMotionListener(this);
     paintTimer.start();
 
   }
 
+  private Object nothing() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
   private void magePressed() {
-    JsonUtils.writeToSocket(manager.out, CharacterInfo.makeMage());
+    JsonUtils.writeToSocket(manager.out, new StartBattleRequest(CharacterInfo.makeMage()));
+    manager.charType = CharacterClass.mage;
     manager.switchView(Views.battle);
   }
 
 
   private void theifPressed() {
-    JsonUtils.writeToSocket(manager.out, CharacterInfo.makeThief());
+    JsonUtils.writeToSocket(manager.out, new StartBattleRequest(CharacterInfo.makeThief()));
+    manager.charType = CharacterClass.theif;
     manager.switchView(Views.battle);
   }
 
 
   private void warriorPressed() {
-    JsonUtils.writeToSocket(manager.out, CharacterInfo.makeWarrior());
+    JsonUtils.writeToSocket(manager.out, new StartBattleRequest(CharacterInfo.makeWarrior()));
+    manager.charType = CharacterClass.warrior;
     manager.switchView(Views.battle);
   }
 
@@ -129,6 +148,11 @@ public class Client_Character_Select_UI extends JPanel implements MouseListener,
     for (Drawable drawable : drawables) {
       if (drawable.contains(e.getPoint())) {
         drawable.onHover();
+        if (drawable.contains(new Point(70, 50))) {
+
+
+
+        }
       } else {
         drawable.onUnHover();
       }

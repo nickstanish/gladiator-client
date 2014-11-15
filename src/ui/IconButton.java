@@ -65,6 +65,15 @@ public class IconButton implements Drawable {
     return point.x > x && point.x < x + width && point.y > y && point.y < y + height;
   }
 
+  public void setFile(File file) {
+    try {
+      this.image = resize(ImageIO.read(file), 64, 64);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
   @Override
   public void onHover() {
     hovered = true;

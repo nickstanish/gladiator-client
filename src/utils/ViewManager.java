@@ -9,6 +9,7 @@ import java.net.Socket;
 
 import javax.swing.JFrame;
 
+import main.CharacterClass;
 import main.Views;
 import views.Client_Battle_UI;
 import views.Client_Battle_Waiting_UI;
@@ -32,6 +33,7 @@ public class ViewManager extends JFrame {
   private static final String LEADERBOARDS_SCREEN = "Leaderboards";
   private static final String BATTLE_SCREEN = "Battle";
   private static final String CHARACTER_SELECT_SCREEN = "SelectCharacter";
+  public CharacterClass charType;
   public Socket socket;
   public BufferedReader in;
   public PrintWriter out;

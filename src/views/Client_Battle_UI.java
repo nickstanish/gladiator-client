@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
+import main.CharacterClass;
 import main.Views;
 import responses.BattleStatusResponse;
 import ui.Drawable;
@@ -45,16 +46,53 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     repaint();
   }
 
+  public ArrayList<String> descriptions;
+
   public Client_Battle_UI(ViewManager manager) {
     this.manager = manager;
     initBattle();
     drawables = new ArrayList<Drawable>();
-    drawables.add(new IconButton(50, 50, new File("media/icons/bowman.png"), a -> bowmanPressed()));
-    drawables.add(new IconButton(150, 50, new File("media/icons/robe.png"), a -> robePressed()));
-    drawables.add(new IconButton(250, 50, new File("media/icons/cloak-dagger.png"),
-        a -> cloakDudePressed()));
-    drawables.add(new IconButton(350, 50, new File("media/icons/battle-gear.png"),
-        a -> battleGearPressed()));
+
+    if (manager.charType == CharacterClass.warrior) {
+      drawables.add(new IconButton(50, 50, new File("media/icons/bloody-slash.png"),
+          a -> bowmanPressed()));
+      descriptions.add("Bloody Slash \n 2AP");
+      drawables.add(new IconButton(150, 50, new File("media/icons/shield-reflect.png"),
+          a -> robePressed()));
+      descriptions.add("Bloody Slash \n 2AP");
+      drawables.add(new IconButton(250, 50, new File("media/icons/round-shield.png"),
+          a -> cloakDudePressed()));
+      descriptions.add("Bloody Slash \n 2AP");
+      drawables.add(new IconButton(350, 50, new File("media/icons/mailed-fist.png"),
+          a -> battleGearPressed()));
+      descriptions.add("Bloody Slash \n 2AP");
+    } else if (manager.charType == CharacterClass.theif) {
+      drawables.add(new IconButton(50, 50, new File("media/icons/machete.png"),
+          a -> bowmanPressed()));
+      descriptions.add("Bloody Slash \n 2AP");
+      drawables.add(new IconButton(150, 50, new File("media/icons/heavy-arrow.png"),
+          a -> robePressed()));
+      descriptions.add("Bloody Slash \n 2AP");
+      drawables.add(new IconButton(250, 50, new File("media/icons/flash-grenade.png"),
+          a -> cloakDudePressed()));
+      descriptions.add("Bloody Slash \n 2AP");
+      drawables.add(new IconButton(350, 50, new File("media/icons/backstab.png"),
+          a -> battleGearPressed()));
+      descriptions.add("Bloody Slash \n 2AP");
+    } else if (manager.charType == CharacterClass.mage) {
+      drawables.add(new IconButton(50, 50, new File("media/icons/heart-bottle.png"),
+          a -> bowmanPressed()));
+      descriptions.add("Bloody Slash \n 2AP");
+      drawables.add(new IconButton(150, 50, new File("media/icons/smoking-finger.png"),
+          a -> robePressed()));
+      descriptions.add("Bloody Slash \n 2AP");
+      drawables.add(new IconButton(250, 50, new File("media/icons/embrassed-energy.png"),
+          a -> cloakDudePressed()));
+      descriptions.add("Bloody Slash \n 2AP");
+      drawables.add(new IconButton(350, 50, new File("media/icons/broken-bottle.png"),
+          a -> battleGearPressed()));
+      descriptions.add("Bloody Slash \n 2AP");
+    }
     addMouseListener(this);
     addMouseMotionListener(this);
     paintTimer.start();
