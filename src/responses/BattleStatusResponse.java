@@ -10,4 +10,8 @@ public class BattleStatusResponse {
     this.your_turn = your_turn;
   }
 
+  public boolean isValid() {
+    return game_ready != null && your_turn != null;
+  }
+
 }
