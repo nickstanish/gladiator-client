@@ -51,7 +51,8 @@ public class JsonUtils {
         shift(search, curr);
         if (curr == -1)
           return null;
-        builder.append((char) curr);
+        if (curr != '\n')
+          builder.append((char) curr);
 
       }
     } catch (IOException e) {
