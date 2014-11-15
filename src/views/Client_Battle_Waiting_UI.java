@@ -71,7 +71,7 @@ public class Client_Battle_Waiting_UI extends JPanel {
               JsonUtils.readFromSocket(manager.in, ConnectingResponse.class);
 
           if (response.connected) {
-            manager.switchView(Views.battle);
+            manager.switchView(Views.characterselect);
             return null;
           } else {
             queue_position.setText("Position in Queue: " + response.position + " / "

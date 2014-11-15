@@ -44,14 +44,34 @@ public class Client_Customize_UI extends JPanel implements MouseListener, MouseM
     this.manager = manager;
     initCustomize();
     drawables = new ArrayList<Drawable>();
-    drawables.add(new IconButton(75, 50, new File("media/icons/spartan.png")));
-    drawables.add(new IconButton(175, 50, new File("media/icons/hood.png")));
-    drawables.add(new IconButton(275, 50, new File("media/icons/pointy-hat.png")));
+    drawables.add(new IconButton(75, 100, new File("media/icons/spartan.png"),
+        a -> warriorPressed()));
+    drawables.add(new IconButton(175, 100, new File("media/icons/hood.png"), a -> theifPressed()));
+    drawables.add(new IconButton(275, 100, new File("media/icons/pointy-hat.png"),
+        a -> magePressed()));
     addMouseListener(this);
     addMouseMotionListener(this);
     paintTimer.start();
 
   }
+
+  private void magePressed() {
+    // JsonUtils.writeToSocket(manager.out, CharacterInfo.makeMage());
+    // manager.switchView(Views.battle);
+  }
+
+
+  private void theifPressed() {
+    // JsonUtils.writeToSocket(manager.out, CharacterInfo.makeThief());
+    // manager.switchView(Views.battle);
+  }
+
+
+  private void warriorPressed() {
+    // JsonUtils.writeToSocket(manager.out, CharacterInfo.makeWarrior());
+    // manager.switchView(Views.battle);
+  }
+
 
   public void initCustomize() {
 
@@ -76,14 +96,14 @@ public class Client_Customize_UI extends JPanel implements MouseListener, MouseM
     g.fillRect(0, 0, getWidth(), getHeight());
 
     g.setColor(Color.lightGray);
-    g.fillRect(PADDING, PADDING, getWidth() - 2 * PADDING, getHeight() - 2 * PADDING);
+    // g.fillRect(PADDING, PADDING, getWidth() - 2 * PADDING, getHeight() - 2 * PADDING);
 
 
     g.setColor(Color.BLACK);
 
-    g.drawString("Warrior", 85, 125);
-    g.drawString("Thief", 190, 125);
-    g.drawString("Mage", 290, 125);
+    g.drawString("Warrior", 85, 175);
+    g.drawString("Thief", 190, 175);
+    g.drawString("Mage", 290, 175);
 
 
     for (Drawable drawable : drawables) {
@@ -116,7 +136,11 @@ public class Client_Customize_UI extends JPanel implements MouseListener, MouseM
 
   @Override
   public void mouseClicked(MouseEvent e) {
-    // TODO Auto-generated method stub
+    for (Drawable drawable : drawables) {
+      if (drawable.contains(e.getPoint())) {
+        drawable.onClick();
+      }
+    }
 
   }
 
@@ -143,6 +167,5 @@ public class Client_Customize_UI extends JPanel implements MouseListener, MouseM
     // TODO Auto-generated method stub
 
   }
-
 
 }

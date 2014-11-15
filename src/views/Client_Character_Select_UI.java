@@ -10,34 +10,31 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
+import main.CharacterInfo;
 import main.Views;
-import responses.BattleStatusResponse;
+import net.miginfocom.swing.MigLayout;
 import ui.Drawable;
 import ui.IconButton;
 import utils.JsonUtils;
 import utils.ViewManager;
 
-import com.alee.laf.WebLookAndFeel;
 
-
-public class Client_Battle_UI extends JPanel implements MouseListener, MouseMotionListener {
+public class Client_Character_Select_UI extends JPanel implements MouseListener,
+    MouseMotionListener {
 
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
   public ViewManager manager;
-  public SwingWorker<Void, Void> worker;
   private static final int PADDING = 15;
-  List<Drawable> drawables;
+  public ArrayList<Drawable> drawables;
+
 
   private Timer paintTimer = new Timer((int) (1 / 40.0 * 1000), event -> timerEvent(event));
 
@@ -45,52 +42,49 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     repaint();
   }
 
-  public Client_Battle_UI(ViewManager manager) {
+
+  public Client_Character_Select_UI(ViewManager manager) {
     this.manager = manager;
-    initBattle();
+    initCustomize();
     drawables = new ArrayList<Drawable>();
-    drawables.add(new IconButton(50, 50, new File("media/icons/bowman.png"), a -> bowmanPressed()));
-    drawables.add(new IconButton(150, 50, new File("media/icons/robe.png"), a -> robePressed()));
-    drawables.add(new IconButton(250, 50, new File("media/icons/cloak-dagger.png"),
-        a -> cloakDudePressed()));
-    drawables.add(new IconButton(350, 50, new File("media/icons/battle-gear.png"),
-        a -> battleGearPressed()));
+    drawables
+        .add(new IconButton(75, 50, new File("media/icons/spartan.png"), a -> warriorPressed()));
+    drawables.add(new IconButton(175, 50, new File("media/icons/hood.png"), a -> theifPressed()));
+    drawables.add(new IconButton(275, 50, new File("media/icons/pointy-hat.png"),
+        a -> magePressed()));
     addMouseListener(this);
     addMouseMotionListener(this);
     paintTimer.start();
 
-    // JsonUtils.writeToSocket(manager.out, CharacterInfo.makeMage());
   }
 
-  private Drawable battleGearPressed() {
-    System.out.println("battlegear pressed");
-    return null;
+  private void magePressed() {
+    JsonUtils.writeToSocket(manager.out, CharacterInfo.makeMage());
+    manager.switchView(Views.battle);
   }
 
-  private Drawable cloakDudePressed() {
-    System.out.println("cloak dude pressed");
-    return null;
+
+  private void theifPressed() {
+    JsonUtils.writeToSocket(manager.out, CharacterInfo.makeThief());
+    manager.switchView(Views.battle);
   }
 
-  private Drawable robePressed() {
-    // TODO Auto-generated method stub
-    System.out.println("robe dude pressed");
-    return null;
+
+  private void warriorPressed() {
+    JsonUtils.writeToSocket(manager.out, CharacterInfo.makeWarrior());
+    manager.switchView(Views.battle);
   }
 
-  private Drawable bowmanPressed() {
-    // TODO Auto-generated method stub
-    System.out.println("bowman pressed");
-    return null;
-  }
 
-  public void initBattle() {
+  public void initCustomize() {
+
+    setLayout(new MigLayout("Fill"));
 
     JButton back_button = new JButton();
     back_button.setText("Back to Menu");
 
     back_button.addActionListener(event -> backToMenu(event));
-    // add(back_button);
+    // add(back_button, "North");
 
   }
 
@@ -105,47 +99,23 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     g.fillRect(0, 0, getWidth(), getHeight());
 
     g.setColor(Color.lightGray);
+    // g.fillRect(PADDING, PADDING, getWidth() - 2 * PADDING, getHeight() - 2 * PADDING);
 
-    g.fillRect(PADDING, PADDING, getWidth() - 2 * PADDING, getHeight() - 2 * PADDING);
+
     g.setColor(Color.BLACK);
+    g.drawString("Warrior", 85, 125);
+    g.drawString("Thief", 190, 125);
+    g.drawString("Mage", 290, 125);
+
+
     for (Drawable drawable : drawables) {
       drawable.draw(g);
     }
   }
 
+
   private void backToMenu(ActionEvent event) {
     manager.switchView(Views.main_menu);
-  }
-
-  public void waitForTurn() {
-    worker = new SwingWorker<Void, Void>() {
-      @Override
-      protected Void doInBackground() throws Exception {
-        // Simulate doing something useful.
-        for (int i = 0; i <= 180; i++) {
-
-          BattleStatusResponse battle_r =
-              JsonUtils.readFromSocket(manager.in, BattleStatusResponse.class);
-
-          Thread.sleep(1000);
-        }
-        return null;
-      }
-    };
-    worker.execute();
-
-  }
-
-  public static void main(String[] args) {
-    WebLookAndFeel.install();
-    Client_Battle_UI ui = new Client_Battle_UI(null);
-    JFrame window = new JFrame();
-    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    window.getContentPane().add(ui);
-    window.pack();
-    window.setVisible(true);
-    window.setSize(600, 600);
-
   }
 
   @Override

@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import main.Views;
 import views.Client_Battle_UI;
 import views.Client_Battle_Waiting_UI;
+import views.Client_Character_Select_UI;
 import views.Client_Customize_UI;
 import views.Client_Leaderboards_UI;
 import views.Client_Login_UI;
@@ -30,6 +31,7 @@ public class ViewManager extends JFrame {
   private static final String CUSTOMIZE_SCREEN = "Customize";
   private static final String LEADERBOARDS_SCREEN = "Leaderboards";
   private static final String BATTLE_SCREEN = "Battle";
+  private static final String CHARACTER_SELECT_SCREEN = "SelectCharacter";
   public Socket socket;
   public BufferedReader in;
   public PrintWriter out;
@@ -77,6 +79,12 @@ public class ViewManager extends JFrame {
         cl.show(contentPane, BATTLE_SCREEN);
         setSize(800, 450);
         setTitle("Fight to the Death!");
+        break;
+      case characterselect:
+        contentPane.add(new Client_Character_Select_UI(this), CHARACTER_SELECT_SCREEN);
+        cl.show(contentPane, CHARACTER_SELECT_SCREEN);
+        setSize(400, 300);
+        setTitle("Choose your Gladiator!");
         break;
     }
   }

@@ -10,8 +10,8 @@ public class CharacterInfo {
   public int attack;
   public double crit_chance;
 
-  
-  public static CharacterInfo makeTheif(){
+
+  public static CharacterInfo makeThief() {
     CharacterInfo temp = new CharacterInfo();
     temp.character_level = 1;
     temp.character_class = CharacterClass.theif;
@@ -22,8 +22,8 @@ public class CharacterInfo {
     temp.crit_chance = .7;
     return temp;
   }
-  
-  public static CharacterInfo makeWarrior(){
+
+  public static CharacterInfo makeWarrior() {
     CharacterInfo temp = new CharacterInfo();
     temp.character_level = 1;
     temp.character_class = CharacterClass.warrior;
@@ -34,8 +34,9 @@ public class CharacterInfo {
     temp.crit_chance = .05;
     return temp;
   }
-  public static CharacterInfo makeMage(){
-    
+
+  public static CharacterInfo makeMage() {
+
     CharacterInfo temp = new CharacterInfo();
     temp.character_level = 1;
     temp.character_class = CharacterClass.mage;
@@ -46,7 +47,7 @@ public class CharacterInfo {
     temp.crit_chance = .05;
     return temp;
   }
-  
-  
-  
+
+
+
 }
