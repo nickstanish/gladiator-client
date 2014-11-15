@@ -11,6 +11,10 @@ import utils.ViewManager;
 
 public class Client_Customize_UI extends JPanel {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   public ViewManager manager;
 
   public Client_Customize_UI(ViewManager manager) {

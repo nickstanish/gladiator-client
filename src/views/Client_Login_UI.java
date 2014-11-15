@@ -1,6 +1,7 @@
 package views;
 
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -32,7 +33,6 @@ public class Client_Login_UI extends JPanel {
    */
 
   private static final long serialVersionUID = 1635915325136737729L;
-  private JPanel mainPanel, cardsPanel;
   private JButton connectButton;
   private JLabel error_text;
   private JTextField username_field;
@@ -76,18 +76,19 @@ public class Client_Login_UI extends JPanel {
     add(connectButton, "alignX center, span, wrap");
 
     error_text = new JLabel();
+    error_text.setForeground(Color.RED);
     add(error_text, "alignX center, span, wrap");
 
   }
 
   private void connect(ActionEvent event) {
 
-    username_field.getText();
     try {
+      @SuppressWarnings("resource")
       Socket socket = new Socket("localhost", 8080);
       BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-      // out.println("asdfkhgasdhjf");
+
 
       Request userInfo = new Request(username_field.getText().trim(), password_field.getText());
       JsonUtils.writeToSocket(out, userInfo);

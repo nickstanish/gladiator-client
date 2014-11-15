@@ -15,6 +15,10 @@ import views.Client_MainMenu_UI;
 
 public class ViewManager extends JFrame {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   public Container contentPane;
   private static final String LOGIN_SCREEN = "Login";
   private static final String MAINMENU_SCREEN = "MainMenu";
