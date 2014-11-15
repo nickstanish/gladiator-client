@@ -2,6 +2,7 @@ package utils;
 
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -37,6 +38,7 @@ public class ViewManager extends JFrame {
     contentPane = getContentPane();
     contentPane.setLayout(new CardLayout());
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setMinimumSize(new Dimension(400, 300));
     contentPane.add(new Client_Login_UI(this), MAINMENU_SCREEN);
   }
 
@@ -67,14 +69,13 @@ public class ViewManager extends JFrame {
       case leaderboards:
         contentPane.add(new Client_Leaderboards_UI(this), LEADERBOARDS_SCREEN);
         cl.show(contentPane, LEADERBOARDS_SCREEN);
-        setSize(400, 300);
+        setSize(400, 700);
         setTitle("Leaderboards");
         break;
       case battle:
         contentPane.add(new Client_Battle_UI(this), BATTLE_SCREEN);
         cl.show(contentPane, BATTLE_SCREEN);
         setSize(800, 450);
-        setResizable(false);
         setTitle("Fight to the Death!");
         break;
     }
