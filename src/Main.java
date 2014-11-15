@@ -10,8 +10,8 @@ public class Main {
 		WebLookAndFeel.install(); 
 		
 		Client_UI window = new Client_UI();
-		window.show();
-		
+		window.pack();
+		window.setVisible(true);
 	}
 	
 }
