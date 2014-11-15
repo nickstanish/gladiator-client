@@ -188,7 +188,7 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     g.fillRect(450, 360, 760 - 450, 2 * 10);
 
 
-    if (battle_r.game_ready && battle_r.your_turn) {
+    if (battle_r != null && battle_r.isValid() && battle_r.game_ready && battle_r.your_turn) {
       g.drawString("Waiting for your Turn!", PADDING, PADDING);
     }
 
