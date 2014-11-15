@@ -1,4 +1,5 @@
-package Views;
+package views;
+
 
 import java.awt.Container;
 import java.awt.Dimension;
@@ -15,11 +16,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import request.Request;
+import utils.JsonUtils;
+
+import com.google.gson.Gson;
+
+import net.miginfocom.layout.CC;
 import net.miginfocom.swing.MigLayout;
 
 
 public class Client_UI extends JFrame {
-
 
   /**
    * @author: Nick Stanish
@@ -47,7 +53,12 @@ public class Client_UI extends JFrame {
     JLabel login_text = new JLabel();
     login_text.setText("Login");
 
-    mainPanel.add(login_text, "span 3, wrap");
+    CC componentConstraints = new CC();
+    componentConstraints.alignX("center").spanX();
+    componentConstraints.span();
+    componentConstraints.wrap();
+    
+    mainPanel.add(login_text, componentConstraints);
 
     JLabel username_field_text = new JLabel();
     username_field_text.setText("Username: ");
@@ -63,30 +74,39 @@ public class Client_UI extends JFrame {
     mainPanel.add(password_field_text, "left");
     mainPanel.add(password_field, "growx, w ::100%, span 2, wrap");
 
+    CC connectButtonConstraints = new CC();
+    connectButtonConstraints.alignX("center").spanX();
+    connectButtonConstraints.span();
+    connectButtonConstraints.wrap();
+    
+    
     connectButton = new JButton("Connect");
     // java 8 lambda
     connectButton.addActionListener(event -> connect(event));
-    mainPanel.add(connectButton);
+    mainPanel.add(connectButton, connectButtonConstraints);
 
 
     contentPane.add(mainPanel);
   }
 
   private void connect(ActionEvent event) {
-    password_field.getText();
+    
     username_field.getText();
     try {
       Socket socket = new Socket("localhost", 8080);
       BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
       // out.println("asdfkhgasdhjf");
+      
+        Request userInfo = new Request(username_field.getText(),password_field.getText());
+        JsonUtils.writeToSocket(out, userInfo);
+        
       socket.close();
       // String validation = in.readLine();
     } catch (IOException e) {
     }
 
   }
-
-
-
 }
+
+
