@@ -20,6 +20,7 @@ public class ViewManager extends JFrame {
    */
   private static final long serialVersionUID = 1L;
   public Container contentPane;
+  public String username;
   private static final String LOGIN_SCREEN = "Login";
   private static final String MAINMENU_SCREEN = "MainMenu";
   private static final String BATTLE_WAIT_SCREEN = "BattleWaiting";

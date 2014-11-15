@@ -16,6 +16,8 @@ import main.Views;
 import net.miginfocom.swing.MigLayout;
 import request.CancelRequest;
 import request.GameRequest;
+import request.WaitRequest;
+import responses.ConnectingResponse;
 import utils.JsonUtils;
 import utils.ViewManager;
 
@@ -28,9 +30,11 @@ public class Client_Battle_Waiting_UI extends JPanel {
   private static final long serialVersionUID = 1L;
   public ViewManager manager;
   public boolean searching = true;
-  public JLabel searching_text;
-  public JButton cancel_button;
+  public JLabel searching_text, queue_position;
+  public JButton cancel_button, back_button;
   public SwingWorker<Void, Void> worker;
+  public BufferedReader in;
+  public PrintWriter out;
 
   public Client_Battle_Waiting_UI(ViewManager manager) {
     this.manager = manager;
@@ -49,8 +53,8 @@ public class Client_Battle_Waiting_UI extends JPanel {
         try {
           @SuppressWarnings("resource")
           Socket socket = new Socket("localhost", 8080);
-          BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-          PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+          in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+          out = new PrintWriter(socket.getOutputStream(), true);
 
 
           GameRequest g_request = new GameRequest();
@@ -58,7 +62,10 @@ public class Client_Battle_Waiting_UI extends JPanel {
         } catch (IOException e) {
         }
 
-        for (int i = 0; i <= 1000; i++) {
+        for (int i = 0; i <= 180; i++) {
+
+          WaitRequest w_request = new WaitRequest();
+          JsonUtils.writeToSocket(out, w_request);
 
           if (i % 4 == 0) {
             searching_text.setText("Searching for your Opponent");
@@ -73,6 +80,13 @@ public class Client_Battle_Waiting_UI extends JPanel {
             searching_text.setText("Searching for your Opponent...");
           }
 
+          ConnectingResponse response = JsonUtils.readFromSocket(in, ConnectingResponse.class);
+
+          if (response.connected) {
+            manager.switchView(Views.battle);
+          } else
+            queue_position.setText("Position in Queue: " + response.position + " / "
+                + response.total);
 
           Thread.sleep(1000);
         }
@@ -81,33 +95,29 @@ public class Client_Battle_Waiting_UI extends JPanel {
     };
     worker.execute();
 
-
-
   }
 
 
   public void initBattlePend() {
 
-    setLayout(new MigLayout("fillx"));
-    JButton back_button = new JButton();
+    setLayout(new MigLayout("fill"));
+    back_button = new JButton();
+    back_button.setEnabled(false);
     back_button.setText("Back to Menu");
 
     back_button.addActionListener(event -> backToMenu(event));
-    add(back_button);
+    add(back_button, "north");
 
-    JButton temp = new JButton();
-    temp.setText("Temp to Battle");
-
-    temp.addActionListener(event -> onConnect(event));
-    // add(temp);
+    queue_position = new JLabel();
+    add(queue_position, "newline, alignx center");
 
     searching_text = new JLabel();
     searching_text.setText("Searching for your Opponent");
-    add(searching_text, "newline, alignx center");
+    add(searching_text, "newline, alignx center, center");
 
     cancel_button = new JButton();
     cancel_button.setText("Cancel Search");
-    add(cancel_button, "newline, span, wrap, alignx center");
+    add(cancel_button, "newline, span, wrap, alignx center, south");
 
     cancel_button.addActionListener(event -> searchToggle(event));
 
@@ -129,16 +139,13 @@ public class Client_Battle_Waiting_UI extends JPanel {
       worker.cancel(true);
       searching_text.setText("");
       cancel_button.setText("Resume Searching");
+      back_button.setEnabled(true);
     } else {
       searching = true;
+      back_button.setEnabled(false);
       search();
     }
   }
-
-  public void onConnect(ActionEvent event) {
-    manager.switchView(Views.battle);
-  }
-
 
   private void backToMenu(ActionEvent event) {
     manager.switchView(Views.main_menu);

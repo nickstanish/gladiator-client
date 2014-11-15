@@ -97,6 +97,7 @@ public class Client_Login_UI extends JPanel {
 
       if (response != null && response.success != null) {
         if (response.success) {
+          manager.username = username_field.getText().trim();
           manager.switchView(Views.main_menu);
         } else {
           error_text.setText(response.message);
