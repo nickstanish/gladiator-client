@@ -1,4 +1,4 @@
-import views.Client_UI;
+import views.Client_Login_UI;
 
 import com.alee.laf.WebLookAndFeel;
 
@@ -9,7 +9,7 @@ public class Main {
 		
 		WebLookAndFeel.install(); 
 		
-		Client_UI window = new Client_UI();
+		Client_Login_UI window = new Client_Login_UI();
 		window.pack();
 		window.setVisible(true);
 	}

@@ -1,6 +1,7 @@
 package utils;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 import com.google.gson.Gson;
@@ -35,15 +36,21 @@ public class JsonUtils {
     	out.print("\r\n");
     }
 
-    public static String readFromSocket(BufferedReader in, Class<T> type){
+    public static <T> T readFromSocket(BufferedReader in, Class<T> type){
+    	T object;
     	StringBuilder builder = new StringBuilder();
     	String aux = "";
 
-    	while ((aux = in.readLine()) != null) {
-    	    builder.append(aux);
-    	}
+    	try {
+			while ((aux = in.readLine()) != null) {
+			    builder.append(aux);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-    	return builder.toString();
+        object = getGson().fromJson(builder.toString(), type);
+        return object;
     }
     
 }
