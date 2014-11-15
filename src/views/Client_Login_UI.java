@@ -13,11 +13,13 @@ import java.net.Socket;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import main.Views;
 import net.miginfocom.swing.MigLayout;
 import request.Request;
+import responses.Response;
 import utils.JsonUtils;
 import utils.ViewManager;
 
@@ -32,7 +34,9 @@ public class Client_Login_UI extends JPanel {
   private static final long serialVersionUID = 1635915325136737729L;
   private JPanel mainPanel, cardsPanel;
   private JButton connectButton;
-  private JTextField username_field, password_field;
+  private JLabel error_text;
+  private JTextField username_field;
+  private JPasswordField password_field;
   public ViewManager manager;
   public Container contentPane;
 
@@ -61,7 +65,7 @@ public class Client_Login_UI extends JPanel {
 
     JLabel password_field_text = new JLabel();
     password_field_text.setText("Password:  ");
-    password_field = new JTextField();
+    password_field = new JPasswordField();
 
     add(password_field_text, "left");
     add(password_field, "growx, w ::100%, span 2, wrap");
@@ -70,6 +74,10 @@ public class Client_Login_UI extends JPanel {
     // java 8 lambda
     connectButton.addActionListener(event -> connect(event));
     add(connectButton, "alignX center, span, wrap");
+
+    error_text = new JLabel();
+    add(error_text, "alignX center, span, wrap");
+
   }
 
   private void connect(ActionEvent event) {
@@ -81,15 +89,24 @@ public class Client_Login_UI extends JPanel {
       PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
       // out.println("asdfkhgasdhjf");
 
-      Request userInfo = new Request(username_field.getText(), password_field.getText());
+      Request userInfo = new Request(username_field.getText().trim(), password_field.getText());
       JsonUtils.writeToSocket(out, userInfo);
 
+      Response response = JsonUtils.readFromSocket(in, Response.class);
+
+      if (response != null && response.success != null) {
+        if (response.success) {
+          manager.switchView(Views.main_menu);
+        } else {
+          error_text.setText(response.message);
+        }
+
+      }
       // socket.close();
       // String validation = in.readLine();
     } catch (IOException e) {
     }
-    manager.switchView(Views.main_menu);
-  }
 
+  }
 
 }

@@ -32,7 +32,7 @@ public class Client_MainMenu_UI extends JPanel {
     setLayout(new MigLayout("fill, nogrid"));
 
     JButton battle_button = new JButton();
-    battle_button.setText("Areana");
+    battle_button.setText("Arena");
 
     battle_button.addActionListener(event -> showBattleSearch(event));
 
