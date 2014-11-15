@@ -1,5 +1,6 @@
 package views;
 
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
@@ -20,6 +21,8 @@ public class Client_Battle_UI extends JPanel {
   public Client_Battle_UI(ViewManager manager) {
     this.manager = manager;
     initBattle();
+
+
   }
 
   public void initBattle() {
@@ -28,7 +31,16 @@ public class Client_Battle_UI extends JPanel {
     back_button.setText("Back to Menu");
 
     back_button.addActionListener(event -> backToMenu(event));
-    add(back_button);
+    // add(back_button);
+
+  }
+
+  @Override
+  public void paintComponent(Graphics g) {
+    super.paintComponent(g);
+
+    g.drawString("BLAH", 20, 20);
+    g.drawRect(200, 200, 200, 200);
   }
 
   private void backToMenu(ActionEvent event) {

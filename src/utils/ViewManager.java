@@ -73,7 +73,7 @@ public class ViewManager extends JFrame {
       case battle:
         contentPane.add(new Client_Battle_UI(this), BATTLE_SCREEN);
         cl.show(contentPane, BATTLE_SCREEN);
-        setSize(400, 300);
+        setSize(800, 450);
         setTitle("Fight to the Death!");
         break;
     }

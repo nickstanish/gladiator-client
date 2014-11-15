@@ -73,10 +73,10 @@ public class Client_Battle_Waiting_UI extends JPanel {
           if (response.connected) {
             manager.switchView(Views.battle);
             return null;
-          } else
+          } else {
             queue_position.setText("Position in Queue: " + response.position + " / "
                 + response.total);
-
+          }
           Thread.sleep(1000);
         }
         return null;
