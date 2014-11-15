@@ -41,7 +41,7 @@ public class Client_Battle_Waiting_UI extends JPanel {
   }
 
   public void search() {
-    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+    worker = new SwingWorker<Void, Void>() {
       @Override
       protected Void doInBackground() throws Exception {
         // Simulate doing something useful.
@@ -80,6 +80,7 @@ public class Client_Battle_Waiting_UI extends JPanel {
       }
     };
     worker.execute();
+
 
 
   }
@@ -125,9 +126,7 @@ public class Client_Battle_Waiting_UI extends JPanel {
         JsonUtils.writeToSocket(out, c_request);
       } catch (IOException e) {
       }
-      while (worker.isCancelled()) {
-        worker.cancel(true);
-      }
+      worker.cancel(true);
       searching_text.setText("");
       cancel_button.setText("Resume Searching");
     } else {
