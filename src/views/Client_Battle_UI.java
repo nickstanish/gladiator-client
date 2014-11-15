@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -45,6 +46,10 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
   public List<Drawable> drawables;
   public BattleStatusResponse battle_r;
   public BufferedImage warrior;
+  public BufferedImage thief;
+  public Random gen = new Random();
+  public int percent_health_foe;
+  public int percent_health_you;
 
   private Timer paintTimer = new Timer((int) (1 / 40.0 * 1000), event -> timerEvent(event));
 
@@ -59,11 +64,18 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     initBattle();
     descriptions = new ArrayList<String>();
     drawables = new ArrayList<Drawable>();
-    battle_r = new BattleStatusResponse(false, false);
+    // battle_r = new BattleStatusResponse(false, false);
     waitForTurn();
 
     try {
       warrior = ImageIO.read(new File("media/icons/warrior.png"));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    try {
+      thief = ImageIO.read(new File("media/icons/thief.png"));
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -117,9 +129,22 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     System.out.println("skill 1 pressed");
 
     if (battle_r.your_turn && battle_r.game_ready) {
-      battle_r =
-          JsonUtils.makeRequest(manager.out, new BattleStatusRequest(), manager.in,
-              BattleStatusResponse.class);
+
+      if (manager.charType == CharacterClass.mage) {
+        battle_r =
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(-5), manager.in,
+                BattleStatusResponse.class);
+      }
+      if (manager.charType == CharacterClass.theif) {
+        battle_r =
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(15), manager.in,
+                BattleStatusResponse.class);
+      }
+      if (manager.charType == CharacterClass.warrior) {
+        battle_r =
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(25), manager.in,
+                BattleStatusResponse.class);
+      }
 
       waitForTurn();
     }
@@ -130,9 +155,22 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     System.out.println("skill 2 pressed");
 
     if (battle_r.your_turn && battle_r.game_ready) {
-      battle_r =
-          JsonUtils.makeRequest(manager.out, new BattleStatusRequest(), manager.in,
-              BattleStatusResponse.class);
+
+      if (manager.charType == CharacterClass.mage) {
+        battle_r =
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(20), manager.in,
+                BattleStatusResponse.class);
+      }
+      if (manager.charType == CharacterClass.theif) {
+        battle_r =
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(15), manager.in,
+                BattleStatusResponse.class);
+      }
+      if (manager.charType == CharacterClass.warrior) {
+        battle_r =
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(12), manager.in,
+                BattleStatusResponse.class);
+      }
 
       waitForTurn();
     }
@@ -143,10 +181,21 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     System.out.println("skill 3 pressed");
 
     if (battle_r.your_turn && battle_r.game_ready) {
-      battle_r =
-          JsonUtils.makeRequest(manager.out, new BattleStatusRequest(), manager.in,
-              BattleStatusResponse.class);
-
+      if (manager.charType == CharacterClass.mage) {
+        battle_r =
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(-10), manager.in,
+                BattleStatusResponse.class);
+      }
+      if (manager.charType == CharacterClass.theif) {
+        battle_r =
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(-6), manager.in,
+                BattleStatusResponse.class);
+      }
+      if (manager.charType == CharacterClass.warrior) {
+        battle_r =
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(-5), manager.in,
+                BattleStatusResponse.class);
+      }
       waitForTurn();
     }
     return null;
@@ -156,9 +205,22 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     System.out.println("skill 4 pressed");
 
     if (battle_r.your_turn && battle_r.game_ready) {
-      battle_r =
-          JsonUtils.makeRequest(manager.out, new BattleStatusRequest(), manager.in,
-              BattleStatusResponse.class);
+
+      if (manager.charType == CharacterClass.mage) {
+        battle_r =
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(15), manager.in,
+                BattleStatusResponse.class);
+      }
+      if (manager.charType == CharacterClass.theif) {
+        battle_r =
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(20), manager.in,
+                BattleStatusResponse.class);
+      }
+      if (manager.charType == CharacterClass.warrior) {
+        battle_r =
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(10), manager.in,
+                BattleStatusResponse.class);
+      }
       waitForTurn();
     }
     return null;
@@ -205,19 +267,29 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     g.setColor(Color.WHITE);
     g.fillRect(448, 358, 758 - 450, 2 * 9);
     g.setColor(Color.RED);
-    g.fillRect(450, 360, 760 - 450, 2 * 10);
+    if (battle_r != null) {
+      percent_health_foe = (int) ((760 - 450) * (battle_r.foe_health / battle_r.foe_maxhealth));
+    } else
+      percent_health_foe = (int) (760 - 450);
+    g.fillRect(450, 360, percent_health_foe, 2 * 10);
 
 
     g.setColor(Color.WHITE);
     g.fillRect(30, 38, 758 - 450, 2 * 9);
     g.setColor(Color.RED);
-    g.fillRect(32, 40, 760 - 450, 2 * 10);
+    if (battle_r != null) {
+      percent_health_you = (int) ((760 - 450) * (battle_r.me_health / battle_r.me_maxhealth));
+    } else
+      percent_health_you = (int) (760 - 450);
+
+    g.fillRect(32, 40, percent_health_you, 2 * 10);
 
     g.drawImage(warrior, null, 447, 79);
+    // g.drawImage(thief, null, 447, 79);
 
 
     if (battle_r != null && battle_r.isValid() && battle_r.game_ready && battle_r.your_turn) {
-      g.drawString("Waiting for your Turn!", PADDING, PADDING);
+      g.drawString("Waiting for your Turn!", this.getSize().width / 2, this.getSize().height / 2);
     }
 
   }
@@ -234,7 +306,7 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
         for (int i = 0; i <= 1000; i++) {
 
           battle_r =
-              JsonUtils.makeRequest(manager.out, new BattleStatusRequest(), manager.in,
+              JsonUtils.makeRequest(manager.out, new BattleStatusRequest(0), manager.in,
                   BattleStatusResponse.class);
           if (battle_r.game_ready && battle_r.your_turn) {
             worker.cancel(true);
