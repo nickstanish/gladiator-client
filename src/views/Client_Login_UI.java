@@ -1,6 +1,7 @@
 package views;
 
 
+import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -16,13 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import net.miginfocom.swing.MigLayout;
 import request.Request;
 import utils.JsonUtils;
-
-import com.google.gson.Gson;
-
-import net.miginfocom.layout.CC;
-import net.miginfocom.swing.MigLayout;
 
 
 public class Client_Login_UI extends JFrame {
@@ -33,9 +30,12 @@ public class Client_Login_UI extends JFrame {
    */
 
   private static final long serialVersionUID = 1635915325136737729L;
-  private JPanel mainPanel;
+  private JPanel mainPanel, cardsPanel;
   private JButton connectButton;
   private JTextField username_field, password_field;
+  private Container contentPane;
+  private static final String LOGIN_SCREEN = "Login";
+  private static final String MAINMENU_SCREEN = "MainMenu";
 
   public Client_Login_UI() {
     initLogin();
@@ -43,8 +43,10 @@ public class Client_Login_UI extends JFrame {
   }
 
   private void initLogin() {
-    Container contentPane = getContentPane();
+    contentPane = getContentPane();
+    contentPane.setLayout(new CardLayout());
     mainPanel = new JPanel();
+
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     mainPanel.setLayout(new MigLayout("fill, nogrid"));
@@ -53,12 +55,7 @@ public class Client_Login_UI extends JFrame {
     JLabel login_text = new JLabel();
     login_text.setText("Login");
 
-    CC componentConstraints = new CC();
-    componentConstraints.alignX("center").spanX();
-    componentConstraints.span();
-    componentConstraints.wrap();
-
-    mainPanel.add(login_text, componentConstraints);
+    mainPanel.add(login_text, "alignX center, span, wrap");
 
     JLabel username_field_text = new JLabel();
     username_field_text.setText("Username: ");
@@ -74,17 +71,10 @@ public class Client_Login_UI extends JFrame {
     mainPanel.add(password_field_text, "left");
     mainPanel.add(password_field, "growx, w ::100%, span 2, wrap");
 
-    CC connectButtonConstraints = new CC();
-    connectButtonConstraints.alignX("center").spanX();
-    connectButtonConstraints.span();
-    connectButtonConstraints.wrap();
-
-
     connectButton = new JButton("Connect");
     // java 8 lambda
     connectButton.addActionListener(event -> connect(event));
-    mainPanel.add(connectButton, connectButtonConstraints);
-
+    mainPanel.add(connectButton, "alignX center, span, wrap");
 
     contentPane.add(mainPanel);
   }
@@ -106,9 +96,21 @@ public class Client_Login_UI extends JFrame {
     } catch (IOException e) {
     }
 
-    Client_UI window = new Client_UI();
-    window.pack();
-    window.setVisible(true);
+    contentPane.add(new Client_MainMenu_UI(), MAINMENU_SCREEN);
+    switchView(1);
 
   }
+
+  private void switchView(int screen) {
+    CardLayout cl = (CardLayout) (contentPane.getLayout());
+    switch (screen) {
+      case 0:
+        cl.show(contentPane, LOGIN_SCREEN);
+        break;
+      case 1:
+        cl.show(contentPane, MAINMENU_SCREEN);
+        break;
+    }
+  }
+
 }
