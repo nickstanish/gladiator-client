@@ -1,7 +1,6 @@
 package views;
 
 
-import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -12,17 +11,18 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import main.Views;
 import net.miginfocom.swing.MigLayout;
 import request.Request;
 import utils.JsonUtils;
+import utils.ViewManager;
 
 
-public class Client_Login_UI extends JFrame {
+public class Client_Login_UI extends JPanel {
 
   /**
    * @author: Nick Stanish
@@ -33,50 +33,43 @@ public class Client_Login_UI extends JFrame {
   private JPanel mainPanel, cardsPanel;
   private JButton connectButton;
   private JTextField username_field, password_field;
-  private Container contentPane;
-  private static final String LOGIN_SCREEN = "Login";
-  private static final String MAINMENU_SCREEN = "MainMenu";
+  public ViewManager manager;
+  public Container contentPane;
 
-  public Client_Login_UI() {
+
+  public Client_Login_UI(ViewManager manager) {
+    this.manager = manager;
     initLogin();
-
   }
 
   private void initLogin() {
-    contentPane = getContentPane();
-    contentPane.setLayout(new CardLayout());
-    mainPanel = new JPanel();
 
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    mainPanel.setLayout(new MigLayout("fill, nogrid"));
-    mainPanel.setPreferredSize(new Dimension(300, 200));
+    setLayout(new MigLayout("fill, nogrid"));
+    setPreferredSize(new Dimension(300, 200));
 
     JLabel login_text = new JLabel();
     login_text.setText("Login");
 
-    mainPanel.add(login_text, "alignX center, span, wrap");
+    add(login_text, "alignX center, span, wrap");
 
     JLabel username_field_text = new JLabel();
     username_field_text.setText("Username: ");
     username_field = new JTextField();
 
-    mainPanel.add(username_field_text, "left");
-    mainPanel.add(username_field, "growx, w ::100%, span 2, wrap");
+    add(username_field_text, "left");
+    add(username_field, "growx, w ::100%, span 2, wrap");
 
     JLabel password_field_text = new JLabel();
     password_field_text.setText("Password:  ");
     password_field = new JTextField();
 
-    mainPanel.add(password_field_text, "left");
-    mainPanel.add(password_field, "growx, w ::100%, span 2, wrap");
+    add(password_field_text, "left");
+    add(password_field, "growx, w ::100%, span 2, wrap");
 
     connectButton = new JButton("Connect");
     // java 8 lambda
     connectButton.addActionListener(event -> connect(event));
-    mainPanel.add(connectButton, "alignX center, span, wrap");
-
-    contentPane.add(mainPanel);
+    add(connectButton, "alignX center, span, wrap");
   }
 
   private void connect(ActionEvent event) {
@@ -95,22 +88,8 @@ public class Client_Login_UI extends JFrame {
       // String validation = in.readLine();
     } catch (IOException e) {
     }
-
-    contentPane.add(new Client_MainMenu_UI(), MAINMENU_SCREEN);
-    switchView(1);
-
+    manager.switchView(Views.main_menu);
   }
 
-  private void switchView(int screen) {
-    CardLayout cl = (CardLayout) (contentPane.getLayout());
-    switch (screen) {
-      case 0:
-        cl.show(contentPane, LOGIN_SCREEN);
-        break;
-      case 1:
-        cl.show(contentPane, MAINMENU_SCREEN);
-        break;
-    }
-  }
 
 }

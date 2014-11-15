@@ -1,18 +1,20 @@
 package main;
-import views.Client_Login_UI;
+
+import utils.ViewManager;
 
 import com.alee.laf.WebLookAndFeel;
 
 
 public class Main {
 
-	public static void main (String [] args){
-		
-		WebLookAndFeel.install(); 
-		
-		Client_Login_UI window = new Client_Login_UI();
-		window.pack();
-		window.setVisible(true);
-	}
-	
+  public static void main(String[] args) {
+
+    WebLookAndFeel.install();
+
+    ViewManager window = new ViewManager();
+    window.switchView(Views.login);
+    window.pack();
+    window.setVisible(true);
+  }
+
 }
