@@ -182,10 +182,18 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     }
 
     g.drawString("Health: ", 450, 345);
+    g.drawString("Foe's Health: ", 24, 28);
     g.setColor(Color.WHITE);
     g.fillRect(448, 358, 758 - 450, 2 * 9);
     g.setColor(Color.RED);
     g.fillRect(450, 360, 760 - 450, 2 * 10);
+
+
+
+    g.setColor(Color.WHITE);
+    g.fillRect(30, 38, 758 - 450, 2 * 9);
+    g.setColor(Color.RED);
+    g.fillRect(32, 40, 760 - 450, 2 * 10);
 
 
     if (battle_r != null && battle_r.isValid() && battle_r.game_ready && battle_r.your_turn) {
@@ -207,8 +215,7 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
 
           JsonUtils.writeToSocket(manager.out, new BattleStatusRequest());
 
-          BattleStatusResponse battle_r =
-              JsonUtils.readFromSocket(manager.in, BattleStatusResponse.class);
+          battle_r = JsonUtils.readFromSocket(manager.in, BattleStatusResponse.class);
 
           if (battle_r.game_ready && battle_r.your_turn) {
             worker.cancel(true);

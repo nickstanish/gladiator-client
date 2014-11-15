@@ -49,7 +49,7 @@ public class Client_Login_UI extends JPanel {
 
   private void initLogin() {
 
-    setLayout(new MigLayout("fill, nogrid"));
+    setLayout(new MigLayout("fillx, nogrid"));
     setPreferredSize(new Dimension(300, 200));
 
     JLabel login_text = new JLabel();
@@ -62,19 +62,19 @@ public class Client_Login_UI extends JPanel {
     username_field = new JTextField();
 
     add(username_field_text, "left");
-    add(username_field, "growx, w ::100%, span 2, wrap");
+    add(username_field, "growx, w ::100%, span 2");
 
     JLabel password_field_text = new JLabel();
     password_field_text.setText("Password:  ");
     password_field = new JPasswordField();
 
-    add(password_field_text, "left");
-    add(password_field, "growx, w ::100%, span 2, wrap");
+    // add(password_field_text, "left");
+    // add(password_field, "growx, w ::100%, span 2, wrap");
 
     connectButton = new JButton("Connect");
     // java 8 lambda
     connectButton.addActionListener(event -> connect(event));
-    add(connectButton, "alignX center, span, wrap");
+    add(connectButton, "");
 
     error_text = new JLabel();
     error_text.setForeground(Color.RED);
@@ -96,7 +96,7 @@ public class Client_Login_UI extends JPanel {
 
       if (response != null && response.success != null) {
         if (response.success) {
-          manager.switchView(Views.main_menu);
+          manager.switchView(Views.battle_wait_screen);
         } else {
           error_text.setText(response.message);
         }

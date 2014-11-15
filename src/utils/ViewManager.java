@@ -42,7 +42,7 @@ public class ViewManager extends JFrame {
     contentPane = getContentPane();
     contentPane.setLayout(new CardLayout());
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setMinimumSize(new Dimension(400, 300));
+    setMinimumSize(new Dimension(400, 100));
     contentPane.add(new Client_Login_UI(this), MAINMENU_SCREEN);
   }
 
