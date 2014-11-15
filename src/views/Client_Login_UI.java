@@ -74,7 +74,7 @@ public class Client_Login_UI extends JPanel {
     connectButton = new JButton("Connect");
     // java 8 lambda
     connectButton.addActionListener(event -> connect(event));
-    add(connectButton, "");
+    add(connectButton, "newline, alignX center");
 
     error_text = new JLabel();
     error_text.setForeground(Color.RED);

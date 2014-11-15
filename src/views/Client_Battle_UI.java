@@ -47,6 +47,8 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
   public BattleStatusResponse battle_r;
   public BufferedImage warrior;
   public BufferedImage thief;
+  public BufferedImage mage;
+  public BufferedImage hero;
   public Random gen = new Random();
   public int percent_health_foe;
   public int percent_health_you;
@@ -69,6 +71,20 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
 
     try {
       warrior = ImageIO.read(new File("media/icons/warrior.png"));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    try {
+      mage = ImageIO.read(new File("media/icons/mage.png"));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    try {
+      hero = ImageIO.read(new File("media/icons/hero.png"));
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -263,7 +279,8 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
 
 
     g.drawString("Health: ", 450, 345);
-    g.drawString("Foe's Health: ", 24, 28);
+    if (battle_r != null)
+      g.drawString(battle_r.foe + "'s Health: ", 24, 28);
     g.setColor(Color.WHITE);
     g.fillRect(448, 358, 758 - 450, 2 * 9);
     g.setColor(Color.RED);
@@ -284,11 +301,21 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
 
     g.fillRect(32, 40, percent_health_you, 2 * 10);
 
-    g.drawImage(warrior, null, 447, 79);
-    // g.drawImage(thief, null, 447, 79);
 
+    if (battle_r != null && battle_r.foe_class == CharacterClass.warrior) {
+      g.drawImage(warrior, null, 447, 79);
+    }
+    if (battle_r != null && battle_r.foe_class == CharacterClass.theif) {
+      g.drawImage(thief, null, 447, 79);
+    }
+    if (battle_r != null && battle_r.foe_class == CharacterClass.mage) {
+      g.drawImage(mage, null, 450, 145);
+    }
+
+    g.drawImage(hero, null, 40, 92);
 
     if (battle_r != null && battle_r.isValid() && battle_r.game_ready && battle_r.your_turn) {
+      g.setColor(Color.RED);
       g.drawString("Waiting for your Turn!", this.getSize().width / 2, this.getSize().height / 2);
     }
 
