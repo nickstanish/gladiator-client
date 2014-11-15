@@ -67,10 +67,10 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     descriptions = new ArrayList<String>();
     drawables = new ArrayList<Drawable>();
     // battle_r = new BattleStatusResponse(false, false);
-    waitForTurn();
+
 
     try {
-      warrior = ImageIO.read(new File("media/icons/warrior.png"));
+      warrior = ImageIO.read(new File("media/icons/Warrior.png"));
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -138,108 +138,105 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     addMouseListener(this);
     addMouseMotionListener(this);
     paintTimer.start();
+    waitForTurn();
     // JsonUtils.writeToSocket(manager.out, CharacterInfo.makeMage());
   }
 
-  private Drawable skill1() {
-    System.out.println("skill 1 pressed");
+  private void skill1() {
+    System.out.println("skill 1 pr essed");
 
-    if (battle_r.your_turn && battle_r.game_ready) {
+    if (battle_r != null && battle_r.your_turn && battle_r.game_ready) {
 
       if (manager.charType == CharacterClass.mage) {
         battle_r =
-            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(-5), manager.in,
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(-5.0), manager.in,
                 BattleStatusResponse.class);
       }
       if (manager.charType == CharacterClass.theif) {
         battle_r =
-            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(15), manager.in,
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(15.0), manager.in,
                 BattleStatusResponse.class);
       }
       if (manager.charType == CharacterClass.warrior) {
         battle_r =
-            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(25), manager.in,
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(25.0), manager.in,
                 BattleStatusResponse.class);
       }
 
       waitForTurn();
     }
-    return null;
   }
 
-  private Drawable skill2() {
+  private void skill2() {
     System.out.println("skill 2 pressed");
 
-    if (battle_r.your_turn && battle_r.game_ready) {
+    if (battle_r != null && battle_r.your_turn && battle_r.game_ready) {
 
       if (manager.charType == CharacterClass.mage) {
         battle_r =
-            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(20), manager.in,
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(20.0), manager.in,
                 BattleStatusResponse.class);
       }
       if (manager.charType == CharacterClass.theif) {
         battle_r =
-            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(15), manager.in,
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(15.0), manager.in,
                 BattleStatusResponse.class);
       }
       if (manager.charType == CharacterClass.warrior) {
         battle_r =
-            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(12), manager.in,
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(12.0), manager.in,
                 BattleStatusResponse.class);
       }
 
       waitForTurn();
     }
-    return null;
   }
 
-  private Drawable skill3() {
+  private void skill3() {
     System.out.println("skill 3 pressed");
 
-    if (battle_r.your_turn && battle_r.game_ready) {
+    if (battle_r != null && battle_r.your_turn && battle_r.game_ready) {
       if (manager.charType == CharacterClass.mage) {
         battle_r =
-            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(-10), manager.in,
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(-10.0), manager.in,
                 BattleStatusResponse.class);
       }
       if (manager.charType == CharacterClass.theif) {
         battle_r =
-            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(-6), manager.in,
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(-6.0), manager.in,
                 BattleStatusResponse.class);
       }
       if (manager.charType == CharacterClass.warrior) {
         battle_r =
-            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(-5), manager.in,
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(-5.0), manager.in,
                 BattleStatusResponse.class);
       }
       waitForTurn();
     }
-    return null;
   }
 
-  private Drawable skill4() {
+  private void skill4() {
     System.out.println("skill 4 pressed");
 
-    if (battle_r.your_turn && battle_r.game_ready) {
+    if (battle_r != null && battle_r.your_turn && battle_r.game_ready) {
 
       if (manager.charType == CharacterClass.mage) {
         battle_r =
-            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(15), manager.in,
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(15.0), manager.in,
                 BattleStatusResponse.class);
       }
       if (manager.charType == CharacterClass.theif) {
         battle_r =
-            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(20), manager.in,
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(20.0), manager.in,
                 BattleStatusResponse.class);
       }
       if (manager.charType == CharacterClass.warrior) {
         battle_r =
-            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(10), manager.in,
+            JsonUtils.makeRequest(manager.out, new BattleStatusRequest(10.0), manager.in,
                 BattleStatusResponse.class);
       }
       waitForTurn();
     }
-    return null;
   }
 
   public void initBattle() {
@@ -315,8 +312,12 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     g.drawImage(hero, null, 40, 92);
 
     if (battle_r != null && battle_r.isValid() && battle_r.game_ready && battle_r.your_turn) {
+<<<<<<< HEAD
       g.setColor(Color.RED);
       g.drawString("Waiting for your Turn!", this.getSize().width / 2, this.getSize().height / 2);
+=======
+      g.drawString("Your Turn!", this.getSize().width / 2, this.getSize().height / 2);
+>>>>>>> edfecfd01529f9326f4255590a21e658e0abba4a
     }
 
   }
@@ -333,7 +334,7 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
         for (int i = 0; i <= 1000; i++) {
 
           battle_r =
-              JsonUtils.makeRequest(manager.out, new BattleStatusRequest(0), manager.in,
+              JsonUtils.makeRequest(manager.out, new BattleStatusRequest(null), manager.in,
                   BattleStatusResponse.class);
           if (battle_r.game_ready && battle_r.your_turn) {
             worker.cancel(true);
