@@ -56,7 +56,8 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     descriptions = new ArrayList<String>();
     drawables = new ArrayList<Drawable>();
     battle_r = new BattleStatusResponse(false, false);
-    battle_r = JsonUtils.readFromSocket(manager.in, BattleStatusResponse.class);
+    waitForTurn();
+
 
     if (manager.charType == CharacterClass.warrior) {
       drawables
@@ -99,7 +100,6 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     addMouseListener(this);
     addMouseMotionListener(this);
     paintTimer.start();
-    waitForTurn();
     // JsonUtils.writeToSocket(manager.out, CharacterInfo.makeMage());
   }
 
@@ -107,7 +107,7 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     System.out.println("skill 1 pressed");
 
     if (battle_r.your_turn && battle_r.game_ready) {
-      JsonUtils.toJsonString(new BattleStatusRequest());
+      JsonUtils.writeToSocket(manager.out, new BattleStatusRequest());
 
       waitForTurn();
     }
@@ -118,7 +118,7 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     System.out.println("skill 2 pressed");
 
     if (battle_r.your_turn && battle_r.game_ready) {
-      JsonUtils.toJsonString(new BattleStatusRequest());
+      JsonUtils.writeToSocket(manager.out, new BattleStatusRequest());
 
       waitForTurn();
     }
@@ -129,7 +129,7 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     System.out.println("skill 3 pressed");
 
     if (battle_r.your_turn && battle_r.game_ready) {
-      JsonUtils.toJsonString(new BattleStatusRequest());
+      JsonUtils.writeToSocket(manager.out, new BattleStatusRequest());
 
       waitForTurn();
     }
@@ -140,7 +140,7 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     System.out.println("skill 4 pressed");
 
     if (battle_r.your_turn && battle_r.game_ready) {
-      JsonUtils.toJsonString(new BattleStatusRequest());
+      JsonUtils.writeToSocket(manager.out, new BattleStatusRequest());
 
       waitForTurn();
     }
@@ -205,7 +205,7 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
         // Simulate doing something useful.
         for (int i = 0; i <= 1000; i++) {
 
-          JsonUtils.toJsonString(new BattleStatusRequest());
+          JsonUtils.writeToSocket(manager.out, new BattleStatusRequest());
 
           BattleStatusResponse battle_r =
               JsonUtils.readFromSocket(manager.in, BattleStatusResponse.class);
