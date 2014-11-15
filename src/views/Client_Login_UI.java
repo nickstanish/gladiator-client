@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -84,29 +85,28 @@ public class Client_Login_UI extends JPanel {
   private void connect(ActionEvent event) {
 
     try {
-      @SuppressWarnings("resource")
-      Socket socket = new Socket("localhost", 8080);
-      BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
+      manager.socket = new Socket("localhost", 8080);
+      manager.in = new BufferedReader(new InputStreamReader(manager.socket.getInputStream()));
+      manager.out = new PrintWriter(manager.socket.getOutputStream(), true);
 
       Request userInfo = new Request(username_field.getText().trim(), password_field.getText());
-      JsonUtils.writeToSocket(out, userInfo);
+      JsonUtils.writeToSocket(manager.out, userInfo);
 
-      Response response = JsonUtils.readFromSocket(in, Response.class);
+      Response response = JsonUtils.readFromSocket(manager.in, Response.class);
 
       if (response != null && response.success != null) {
         if (response.success) {
-          manager.username = username_field.getText().trim();
           manager.switchView(Views.main_menu);
         } else {
           error_text.setText(response.message);
         }
 
       }
-      // socket.close();
-      // String validation = in.readLine();
+
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
     } catch (IOException e) {
+      e.printStackTrace();
     }
 
   }

@@ -2,6 +2,9 @@ package utils;
 
 import java.awt.CardLayout;
 import java.awt.Container;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 import javax.swing.JFrame;
 
@@ -20,14 +23,15 @@ public class ViewManager extends JFrame {
    */
   private static final long serialVersionUID = 1L;
   public Container contentPane;
-  public String username;
   private static final String LOGIN_SCREEN = "Login";
   private static final String MAINMENU_SCREEN = "MainMenu";
   private static final String BATTLE_WAIT_SCREEN = "BattleWaiting";
   private static final String CUSTOMIZE_SCREEN = "Customize";
   private static final String LEADERBOARDS_SCREEN = "Leaderboards";
   private static final String BATTLE_SCREEN = "Battle";
-
+  public Socket socket;
+  public BufferedReader in;
+  public PrintWriter out;
 
   public ViewManager() {
     contentPane = getContentPane();
