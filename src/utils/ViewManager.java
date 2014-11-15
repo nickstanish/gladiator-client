@@ -69,7 +69,7 @@ public class ViewManager extends JFrame {
       case leaderboards:
         contentPane.add(new Client_Leaderboards_UI(this), LEADERBOARDS_SCREEN);
         cl.show(contentPane, LEADERBOARDS_SCREEN);
-        setSize(400, 300);
+        setSize(400, 700);
         setTitle("Leaderboards");
         break;
       case battle:

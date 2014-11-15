@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import main.Views;
+import net.miginfocom.swing.MigLayout;
 import utils.ViewManager;
 
 
@@ -24,12 +25,13 @@ public class Client_Leaderboards_UI extends JPanel {
 
   public void initBattlePend() {
 
+    setLayout(new MigLayout("Fill"));
     JButton back_button = new JButton();
     back_button.setText("Back to Menu");
 
     back_button.addActionListener(event -> backToMenu(event));
 
-    add(back_button);
+    add(back_button, "south");
 
   }
 

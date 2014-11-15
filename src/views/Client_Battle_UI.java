@@ -5,6 +5,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +19,16 @@ import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
 import main.Views;
+import responses.BattleStatusResponse;
 import ui.Drawable;
-import ui.GButton;
+import ui.IconButton;
+import utils.JsonUtils;
 import utils.ViewManager;
 
 import com.alee.laf.WebLookAndFeel;
 
 
-public class Client_Battle_UI extends JPanel {
+public class Client_Battle_UI extends JPanel implements MouseListener, MouseMotionListener {
 
   /**
    * 
@@ -43,9 +49,13 @@ public class Client_Battle_UI extends JPanel {
     this.manager = manager;
     initBattle();
     drawables = new ArrayList<Drawable>();
-    GButton button = new GButton(50, 50, "BUTTON text");
-    drawables.add(button);
-
+    drawables.add(new IconButton(50, 50, new File("media/icons/bowman.png")));
+    drawables.add(new IconButton(150, 50, new File("media/icons/robe.png")));
+    drawables.add(new IconButton(250, 50, new File("media/icons/cloak-dagger.png")));
+    drawables.add(new IconButton(350, 50, new File("media/icons/battle-gear.png")));
+    addMouseListener(this);
+    addMouseMotionListener(this);
+    paintTimer.start();
 
     // JsonUtils.writeToSocket(manager.out, CharacterInfo.makeMage());
   }
@@ -91,8 +101,8 @@ public class Client_Battle_UI extends JPanel {
         // Simulate doing something useful.
         for (int i = 0; i <= 180; i++) {
 
-          // BattleStatusResponse battle_r =
-          // JsonUtils.readFromSocket(manager.in, BattleStatusResponse.class);
+          BattleStatusResponse battle_r =
+              JsonUtils.readFromSocket(manager.in, BattleStatusResponse.class);
 
           Thread.sleep(1000);
         }
@@ -112,6 +122,54 @@ public class Client_Battle_UI extends JPanel {
     window.pack();
     window.setVisible(true);
     window.setSize(600, 600);
+
+  }
+
+  @Override
+  public void mouseDragged(MouseEvent e) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void mouseMoved(MouseEvent e) {
+    for (Drawable drawable : drawables) {
+      if (drawable.contains(e.getPoint())) {
+        drawable.onHover();
+      } else {
+        drawable.onUnHover();
+      }
+    }
+
+  }
+
+  @Override
+  public void mouseClicked(MouseEvent e) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void mousePressed(MouseEvent e) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void mouseReleased(MouseEvent e) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void mouseEntered(MouseEvent e) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void mouseExited(MouseEvent e) {
+    // TODO Auto-generated method stub
 
   }
 
