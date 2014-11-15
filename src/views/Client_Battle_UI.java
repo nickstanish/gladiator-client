@@ -7,7 +7,10 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
+import main.CharacterInfo;
 import main.Views;
+import responses.BattleStatusResponse;
+import utils.JsonUtils;
 import utils.ViewManager;
 
 
@@ -24,7 +27,7 @@ public class Client_Battle_UI extends JPanel {
     this.manager = manager;
     initBattle();
 
-    // JsonUtils.writeToSocket(manager.out, CharacterInfo.makeMage());
+    JsonUtils.writeToSocket(manager.out, CharacterInfo.makeMage());
   }
 
   public void initBattle() {
@@ -56,8 +59,8 @@ public class Client_Battle_UI extends JPanel {
         // Simulate doing something useful.
         for (int i = 0; i <= 180; i++) {
 
-          // BattleStatusResponse battle_r =
-          // JsonUtils.readFromSocket(manager.in, BattleStatusResponse.class);
+          BattleStatusResponse battle_r =
+              JsonUtils.readFromSocket(manager.in, BattleStatusResponse.class);
 
           Thread.sleep(1000);
         }
