@@ -74,6 +74,7 @@ public class ViewManager extends JFrame {
         contentPane.add(new Client_Battle_UI(this), BATTLE_SCREEN);
         cl.show(contentPane, BATTLE_SCREEN);
         setSize(800, 450);
+        setResizable(false);
         setTitle("Fight to the Death!");
         break;
     }
