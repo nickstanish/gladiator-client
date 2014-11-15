@@ -1,23 +1,25 @@
 package views;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
-import javax.swing.UIManager;
-
-import com.alee.laf.WebLookAndFeel;
 
 import main.Views;
+import ui.Drawable;
+import ui.GButton;
 import utils.ViewManager;
+
+import com.alee.laf.WebLookAndFeel;
 
 
 public class Client_Battle_UI extends JPanel {
@@ -29,6 +31,7 @@ public class Client_Battle_UI extends JPanel {
   public ViewManager manager;
   public SwingWorker<Void, Void> worker;
   private static final int PADDING = 15;
+  List<Drawable> drawables;
 
   private Timer paintTimer = new Timer((int) (1 / 40.0 * 1000), event -> timerEvent(event));
 
@@ -39,6 +42,9 @@ public class Client_Battle_UI extends JPanel {
   public Client_Battle_UI(ViewManager manager) {
     this.manager = manager;
     initBattle();
+    drawables = new ArrayList<Drawable>();
+    GButton button = new GButton(50, 50, "BUTTON text");
+    drawables.add(button);
 
 
     // JsonUtils.writeToSocket(manager.out, CharacterInfo.makeMage());
@@ -69,6 +75,9 @@ public class Client_Battle_UI extends JPanel {
     g.fillRect(PADDING, PADDING, getWidth() - 2 * PADDING, getHeight() - 2 * PADDING);
     g.setColor(Color.BLACK);
     g.drawString("BLAH", 20, 20);
+    for (Drawable drawable : drawables) {
+      drawable.draw(g);
+    }
   }
 
   private void backToMenu(ActionEvent event) {
