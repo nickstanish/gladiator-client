@@ -20,7 +20,9 @@ import main.CharacterClass;
 import main.CharacterInfo;
 import main.Views;
 import net.miginfocom.swing.MigLayout;
+import request.BattleStatusRequest;
 import request.StartBattleRequest;
+import responses.BattleStatusResponse;
 import ui.Drawable;
 import ui.IconButton;
 import utils.JsonUtils;
@@ -75,25 +77,32 @@ public class Client_Character_Select_UI extends JPanel implements MouseListener,
 
 
   private void magePressed() {
-    JsonUtils.writeToSocket(manager.out, new StartBattleRequest(CharacterInfo.makeMage()));
+    BattleStatusResponse battle_r =
+        JsonUtils.makeRequest(manager.out, new StartBattleRequest(CharacterInfo.makeMage()),
+            manager.in, BattleStatusResponse.class);
     manager.charType = CharacterClass.mage;
     manager.switchView(Views.battle);
   }
 
-
   private void theifPressed() {
-    JsonUtils.writeToSocket(manager.out, new StartBattleRequest(CharacterInfo.makeThief()));
+
+    BattleStatusResponse battle_r =
+        JsonUtils.makeRequest(manager.out, new StartBattleRequest(CharacterInfo.makeThief()),
+            manager.in, BattleStatusResponse.class);
+
     manager.charType = CharacterClass.theif;
     manager.switchView(Views.battle);
   }
 
 
   private void warriorPressed() {
-    JsonUtils.writeToSocket(manager.out, new StartBattleRequest(CharacterInfo.makeWarrior()));
+
+    BattleStatusResponse battle_r =
+        JsonUtils.makeRequest(manager.out, new StartBattleRequest(CharacterInfo.makeWarrior()),
+            manager.in, BattleStatusResponse.class);
     manager.charType = CharacterClass.warrior;
     manager.switchView(Views.battle);
   }
-
 
   public void initCustomize() {
 

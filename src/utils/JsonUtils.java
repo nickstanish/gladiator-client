@@ -33,13 +33,19 @@ public class JsonUtils {
     return getGson().toJson(object);
   }
 
-  public static void writeToSocket(PrintWriter out, Object object) {
+  private static void writeToSocket(PrintWriter out, Object object) {
     out.print(toJsonString(object));
     out.print(Constants.HTTP_SEPARATOR_STRING);
     out.flush();
+    System.out.println("OUT: " + toJsonString(object) + "'");
   }
 
-  public static <T> T readFromSocket(BufferedReader in, Class<T> type) {
+  public static <T> T makeRequest(PrintWriter out, Object object, BufferedReader in, Class<T> type) {
+    writeToSocket(out, object);
+    return readFromSocket(in, type);
+  }
+
+  private static <T> T readFromSocket(BufferedReader in, Class<T> type) {
     T object;
     StringBuilder builder = new StringBuilder();
     int curr;
@@ -58,9 +64,10 @@ public class JsonUtils {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    System.out.println(builder.toString());
+    String output = builder.toString().replaceAll("[\r\n]", "").trim();
+    System.out.println("IN: '" + output + "'");
 
-    object = getGson().fromJson(builder.toString().replaceFirst("\r\n\r\n$", ""), type);
+    object = getGson().fromJson(output, type);
     return object;
   }
 

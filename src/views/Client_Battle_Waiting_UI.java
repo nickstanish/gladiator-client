@@ -9,9 +9,11 @@ import javax.swing.SwingWorker;
 
 import main.Views;
 import net.miginfocom.swing.MigLayout;
+import request.BattleStatusRequest;
 import request.CancelRequest;
 import request.GameRequest;
 import request.WaitRequest;
+import responses.BattleStatusResponse;
 import responses.ConnectingResponse;
 import utils.JsonUtils;
 import utils.ViewManager;
@@ -46,13 +48,15 @@ public class Client_Battle_Waiting_UI extends JPanel {
 
 
         GameRequest g_request = new GameRequest();
-        JsonUtils.writeToSocket(manager.out, g_request);
+        ConnectingResponse response =
+            JsonUtils.makeRequest(manager.out, g_request, manager.in, ConnectingResponse.class);
 
 
         for (int i = 0; i <= 180; i++) {
 
           WaitRequest w_request = new WaitRequest();
-          JsonUtils.writeToSocket(manager.out, w_request);
+          response =
+              JsonUtils.makeRequest(manager.out, w_request, manager.in, ConnectingResponse.class);
 
           if (i % 4 == 0) {
             searching_text.setText("Searching for your Opponent");
@@ -66,9 +70,6 @@ public class Client_Battle_Waiting_UI extends JPanel {
           if (i % 4 == 3) {
             searching_text.setText("Searching for your Opponent...");
           }
-
-          ConnectingResponse response =
-              JsonUtils.readFromSocket(manager.in, ConnectingResponse.class);
 
           if (response.connected) {
             manager.switchView(Views.characterselect);
@@ -117,7 +118,8 @@ public class Client_Battle_Waiting_UI extends JPanel {
       searching = false;
 
       CancelRequest c_request = new CancelRequest();
-      JsonUtils.writeToSocket(manager.out, c_request);
+      ConnectingResponse response =
+          JsonUtils.makeRequest(manager.out, c_request, manager.in, ConnectingResponse.class);
 
       worker.cancel(true);
       searching_text.setText("");

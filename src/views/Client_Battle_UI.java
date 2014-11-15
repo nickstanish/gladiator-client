@@ -107,7 +107,9 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     System.out.println("skill 1 pressed");
 
     if (battle_r.your_turn && battle_r.game_ready) {
-      JsonUtils.writeToSocket(manager.out, new BattleStatusRequest());
+      battle_r =
+          JsonUtils.makeRequest(manager.out, new BattleStatusRequest(), manager.in,
+              BattleStatusResponse.class);
 
       waitForTurn();
     }
@@ -118,7 +120,9 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     System.out.println("skill 2 pressed");
 
     if (battle_r.your_turn && battle_r.game_ready) {
-      JsonUtils.writeToSocket(manager.out, new BattleStatusRequest());
+      battle_r =
+          JsonUtils.makeRequest(manager.out, new BattleStatusRequest(), manager.in,
+              BattleStatusResponse.class);
 
       waitForTurn();
     }
@@ -129,7 +133,9 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     System.out.println("skill 3 pressed");
 
     if (battle_r.your_turn && battle_r.game_ready) {
-      JsonUtils.writeToSocket(manager.out, new BattleStatusRequest());
+      battle_r =
+          JsonUtils.makeRequest(manager.out, new BattleStatusRequest(), manager.in,
+              BattleStatusResponse.class);
 
       waitForTurn();
     }
@@ -140,8 +146,9 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     System.out.println("skill 4 pressed");
 
     if (battle_r.your_turn && battle_r.game_ready) {
-      JsonUtils.writeToSocket(manager.out, new BattleStatusRequest());
-
+      battle_r =
+          JsonUtils.makeRequest(manager.out, new BattleStatusRequest(), manager.in,
+              BattleStatusResponse.class);
       waitForTurn();
     }
     return null;
@@ -205,11 +212,9 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
         // Simulate doing something useful.
         for (int i = 0; i <= 1000; i++) {
 
-          JsonUtils.writeToSocket(manager.out, new BattleStatusRequest());
-
-          BattleStatusResponse battle_r =
-              JsonUtils.readFromSocket(manager.in, BattleStatusResponse.class);
-
+          battle_r =
+              JsonUtils.makeRequest(manager.out, new BattleStatusRequest(), manager.in,
+                  BattleStatusResponse.class);
           if (battle_r.game_ready && battle_r.your_turn) {
             worker.cancel(true);
           }
