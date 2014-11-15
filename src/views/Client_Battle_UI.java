@@ -282,28 +282,25 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     g.fillRect(448, 358, 758 - 450, 2 * 9);
     g.setColor(Color.RED);
     if (battle_r != null) {
-      percent_health_foe = (int) ((760 - 450) * (battle_r.foe_health / battle_r.foe_maxhealth));
-    } else
-      percent_health_foe = (int) (760 - 450);
-    g.fillRect(450, 360, percent_health_foe, 2 * 10);
-
-
-    g.setColor(Color.WHITE);
-    g.fillRect(30, 38, 758 - 450, 2 * 9);
-    g.setColor(Color.RED);
-    if (battle_r != null) {
       percent_health_you = (int) ((760 - 450) * (battle_r.me_health / battle_r.me_maxhealth));
     } else
       percent_health_you = (int) (760 - 450);
+    g.fillRect(450, 360, percent_health_you, 2 * 10);
 
-    g.fillRect(32, 40, percent_health_you, 2 * 10);
+
+
+    if (battle_r != null) {
+      percent_health_foe = (int) ((760 - 450) * (battle_r.foe_health / battle_r.foe_maxhealth));
+    } else
+      percent_health_foe = (int) (760 - 450);
+
 
 
     if (battle_r != null && battle_r.foe_class == CharacterClass.warrior) {
       g.drawImage(warrior, null, 447, 79);
     }
     if (battle_r != null && battle_r.foe_class == CharacterClass.theif) {
-      g.drawImage(thief, null, 447, 79);
+      g.drawImage(thief, null, 477, 15);
     }
     if (battle_r != null && battle_r.foe_class == CharacterClass.mage) {
       g.drawImage(mage, null, 450, 145);
@@ -311,13 +308,15 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
 
     g.drawImage(hero, null, 40, 92);
 
+    g.setColor(Color.WHITE);
+    g.fillRect(30, 38, 758 - 450, 2 * 9);
+    g.setColor(Color.RED);
+    g.fillRect(32, 40, percent_health_foe, 2 * 10);
+
     if (battle_r != null && battle_r.isValid() && battle_r.game_ready && battle_r.your_turn) {
-<<<<<<< HEAD
-      g.setColor(Color.RED);
-      g.drawString("Waiting for your Turn!", this.getSize().width / 2, this.getSize().height / 2);
-=======
+
       g.drawString("Your Turn!", this.getSize().width / 2, this.getSize().height / 2);
->>>>>>> edfecfd01529f9326f4255590a21e658e0abba4a
+
     }
 
   }
