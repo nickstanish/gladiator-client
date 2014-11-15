@@ -7,12 +7,13 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
+
 
 public class IconButton implements Drawable {
 
@@ -26,11 +27,13 @@ public class IconButton implements Drawable {
   Color hoverColor = Color.lightGray;
   private double xpadding = 16;
   private BufferedImage image;
+  private Consumer<Void> callback;
 
-  public IconButton(double x, double y, File file) {
+  public IconButton(double x, double y, File file, Consumer<Void> callback) {
     this.x = x;
     this.y = y;
     this.file = file;
+    this.callback = callback;
     try {
       this.image = resize(ImageIO.read(file), 64, 64);
       this.height = image.getHeight();
@@ -76,8 +79,14 @@ public class IconButton implements Drawable {
 
   @Override
   public void onClick() {
-    // TODO Auto-generated method stub
+    if (callback != null) {
+      callback.accept(null);
+    }
 
+  }
+
+  public void setOnClickAction(Consumer<Void> callback) {
+    this.callback = callback;
   }
 
   public static BufferedImage resize(BufferedImage img, int newW, int newH) {

@@ -49,15 +49,39 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     this.manager = manager;
     initBattle();
     drawables = new ArrayList<Drawable>();
-    drawables.add(new IconButton(50, 50, new File("media/icons/bowman.png")));
-    drawables.add(new IconButton(150, 50, new File("media/icons/robe.png")));
-    drawables.add(new IconButton(250, 50, new File("media/icons/cloak-dagger.png")));
-    drawables.add(new IconButton(350, 50, new File("media/icons/battle-gear.png")));
+    drawables.add(new IconButton(50, 50, new File("media/icons/bowman.png"), a -> bowmanPressed()));
+    drawables.add(new IconButton(150, 50, new File("media/icons/robe.png"), a -> robePressed()));
+    drawables.add(new IconButton(250, 50, new File("media/icons/cloak-dagger.png"),
+        a -> cloakDudePressed()));
+    drawables.add(new IconButton(350, 50, new File("media/icons/battle-gear.png"),
+        a -> battleGearPressed()));
     addMouseListener(this);
     addMouseMotionListener(this);
     paintTimer.start();
 
     // JsonUtils.writeToSocket(manager.out, CharacterInfo.makeMage());
+  }
+
+  private Drawable battleGearPressed() {
+    System.out.println("battlegear pressed");
+    return null;
+  }
+
+  private Drawable cloakDudePressed() {
+    System.out.println("cloak dude pressed");
+    return null;
+  }
+
+  private Drawable robePressed() {
+    // TODO Auto-generated method stub
+    System.out.println("robe dude pressed");
+    return null;
+  }
+
+  private Drawable bowmanPressed() {
+    // TODO Auto-generated method stub
+    System.out.println("bowman pressed");
+    return null;
   }
 
   public void initBattle() {
@@ -145,7 +169,11 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
 
   @Override
   public void mouseClicked(MouseEvent e) {
-    // TODO Auto-generated method stub
+    for (Drawable drawable : drawables) {
+      if (drawable.contains(e.getPoint())) {
+        drawable.onClick();
+      }
+    }
 
   }
 
