@@ -52,6 +52,7 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
   public Random gen = new Random();
   public int percent_health_foe;
   public int percent_health_you;
+  public Boolean winner = null;
 
   private Timer paintTimer = new Timer((int) (1 / 40.0 * 1000), event -> timerEvent(event));
 
@@ -240,7 +241,7 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
   }
 
   public void initBattle() {
-
+    winner = null;
     JButton back_button = new JButton();
     back_button.setText("Back to Menu");
 
@@ -313,7 +314,11 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
     g.setColor(Color.RED);
     g.fillRect(32, 40, percent_health_foe, 2 * 10);
 
-    if (battle_r != null && battle_r.isValid() && battle_r.game_ready && battle_r.your_turn) {
+    if (winner != null && winner) {
+      g.drawString("You win!", this.getSize().width / 2, this.getSize().height / 2);
+    } else if (winner != null && !winner) {
+      g.drawString("You Lose!", this.getSize().width / 2, this.getSize().height / 2);
+    } else if (battle_r != null && battle_r.isValid() && battle_r.game_ready && battle_r.your_turn) {
 
       g.drawString("Your Turn!", this.getSize().width / 2, this.getSize().height / 2);
 
@@ -337,6 +342,11 @@ public class Client_Battle_UI extends JPanel implements MouseListener, MouseMoti
                   BattleStatusResponse.class);
           if (battle_r.game_ready && battle_r.your_turn) {
             worker.cancel(true);
+          }
+          if (battle_r.game_ready && (battle_r.me_health <= 0 || battle_r.foe_health < 0)) {
+            worker.cancel(true);
+            winner = battle_r.me_health > 0;
+
           }
 
           Thread.sleep(1000);
